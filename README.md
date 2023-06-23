@@ -1,4 +1,4 @@
-# Banking application
+# CCF Sample Banking application
 
 This is a sample application of a bank consortium.
 
