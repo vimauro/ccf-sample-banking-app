@@ -16,4 +16,4 @@ fi
 source "${VENV_DIR}"/bin/activate
 pip install --quiet --upgrade pip ccf
 
-python scripts/verify_receipt.py <&0
+python verify_receipt.py <&0
