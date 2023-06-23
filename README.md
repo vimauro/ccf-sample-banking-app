@@ -1,18 +1,18 @@
 # CCF Sample Banking application
 
-This is a sample application of a bank consortium.
+This is a CCF sample application of a bank consortium.
 
 ## Quickstart
 
 The quickest way to build and run the sample application is to checkout this repository locally in its development container by clicking:
 
-[![Open in VSCode](https://img.shields.io/static/v1?label=Open+in&message=VSCode&logo=visualstudiocode&color=007ACC&logoColor=007ACC&labelColor=2C2C32)](https://vscode.dev/redirect?url=vscode://ms-vscode-remote.remote-containers/cloneInVolume?url=https://github.com/apiccione/ccf-sample-banking-app)
+[![Open in VSCode](https://img.shields.io/static/v1?label=Open+in&message=VSCode&logo=visualstudiocode&color=007ACC&logoColor=007ACC&labelColor=2C2C32)](https://vscode.dev/redirect?url=vscode://ms-vscode-remote.remote-containers/cloneInVolume?url=https://github.com/andpiccione/ccf-sample-banking-app)
 
 All dependencies will be automatically installed (takes ~2 mins on first checkout).
 
 Alternatively, if your organisation supports it, you can checkout this repository in a Github codespace:
 
-[![Open in GitHub Codespaces](https://img.shields.io/static/v1?label=Open+in&message=GitHub+codespace&logo=github&color=2F363D&logoColor=white&labelColor=2C2C32)](https://github.com/codespaces/new?hide_repo_select=true&repo=apiccione%2Fccf-sample-banking-app)
+[![Open in GitHub Codespaces](https://img.shields.io/static/v1?label=Open+in&message=GitHub+codespace&logo=github&color=2F363D&logoColor=white&labelColor=2C2C32)](https://github.com/codespaces/new?hide_repo_select=true&repo=andpiccione%2Fccf-sample-banking-app)
 
 ## Use case
 
