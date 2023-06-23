@@ -1,44 +1,172 @@
-# CCF App Samples [![Open in VSCode](https://img.shields.io/static/v1?label=Open+in&message=VSCode&logo=visualstudiocode&color=007ACC&logoColor=007ACC&labelColor=2C2C32)](https://vscode.dev/redirect?url=vscode://ms-vscode-remote.remote-containers/cloneInVolume?url=https://github.com/microsoft/ccf-app-samples)
+# Banking application
 
-[![CCF App Samples CI](https://github.com/microsoft/ccf-app-samples/actions/workflows/ci.yml/badge.svg)](https://github.com/microsoft/ccf-app-samples/actions/workflows/ci.yml)
-
-Sample applications for the [Confidential Consortium Framework (CCF)](https://ccf.microsoft.com/).
+This is a sample application of a bank consortium.
 
 ## Quickstart
 
-The quickest way to build and run sample applications is to checkout this repository locally in its development container by clicking:
+The quickest way to build and run the sample application is to checkout this repository locally in its development container by clicking:
 
-[![Open in VSCode](https://img.shields.io/static/v1?label=Open+in&message=VSCode&logo=visualstudiocode&color=007ACC&logoColor=007ACC&labelColor=2C2C32)](https://vscode.dev/redirect?url=vscode://ms-vscode-remote.remote-containers/cloneInVolume?url=https://github.com/microsoft/ccf-app-samples)
+[![Open in VSCode](https://img.shields.io/static/v1?label=Open+in&message=VSCode&logo=visualstudiocode&color=007ACC&logoColor=007ACC&labelColor=2C2C32)](https://vscode.dev/redirect?url=vscode://ms-vscode-remote.remote-containers/cloneInVolume?url=https://github.com/apiccione/ccf-sample-banking-app)
 
 All dependencies will be automatically installed (takes ~2 mins on first checkout).
 
 Alternatively, if your organisation supports it, you can checkout this repository in a Github codespace:
 
-[![Open in GitHub Codespaces](https://img.shields.io/static/v1?label=Open+in&message=GitHub+codespace&logo=github&color=2F363D&logoColor=white&labelColor=2C2C32)](https://github.com/codespaces/new?hide_repo_select=true&repo=microsoft%2Fccf-app-samples)
+[![Open in GitHub Codespaces](https://img.shields.io/static/v1?label=Open+in&message=GitHub+codespace&logo=github&color=2F363D&logoColor=white&labelColor=2C2C32)](https://github.com/codespaces/new?hide_repo_select=true&repo=apiccione%2Fccf-sample-banking-app)
 
-Please choose a sample to learn more.
-- [Auditable Logging App](./auditable-logging-app/README.md)
-- [Banking App](./banking-app/README.md)
-- [Data Reconciliation App](./data-reconciliation-app/README.md)
+## Use case
 
-## Contributing
+A bank system that can be run by multiple banks is required.
 
-This project welcomes contributions and suggestions. Most contributions require you to agree to a
-Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us
-the rights to use your contribution. For details, visit https://cla.opensource.microsoft.com.
+## What the application does
 
-When you submit a pull request, a CLA bot will automatically determine whether you need to provide
-a CLA and decorate the PR appropriately (e.g., status check, comment). Simply follow the instructions
-provided by the bot. You will only need to do this once across all repos using our CLA.
+This application provides a REST API with the following endpoints:
 
-This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/).
-For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or
-contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
+- PUT `/app/account/{user_id}/{account_name}`
+  - Create account for a bank account holder
+  - It can be called by banks ([members](https://microsoft.github.io/CCF/main/overview/glossary.html#term-Members) in CCF terminology)
+  - Status code for successful calls: 204
+- POST `/app/deposit/{user_id}/{account_name}`
+  - Deposit money
+  - It can be called by banks ([members](https://microsoft.github.io/CCF/main/overview/glossary.html#term-Members) in CCF terminology)
+  - Example request body: `{ "value" : 100 }`
+  - Status code for successful calls: 204
+- GET `/app/balance/{account_name}`
+  - Check balance
+  - It can be called by bank account holders ([users](https://microsoft.github.io/CCF/main/overview/glossary.html#term-Users) in CCF terminology)
+  - Example response: Status code 200 with body `{ "balance" : 100 }`
+- POST `/app/transfer/{account_name}`
+  - Transfer money from an account to another account
+  - It can be called by bank account holders ([users](https://microsoft.github.io/CCF/main/overview/glossary.html#term-Users) in CCF terminology)
+  - Example request body: `{ value : 100, user_id_to: 'userA' , account_name_to: 'accountA' }`
+  - Status code for successful calls: 204
 
-## Trademarks
+### Why "Deposit money" API (`POST /app/deposit/{user_id}/{account_name}`) can't be called by users not members?
 
-This project may contain trademarks or logos for projects, products, or services. Authorized use of Microsoft
-trademarks or logos is subject to and must follow
-[Microsoft's Trademark & Brand Guidelines](https://www.microsoft.com/en-us/legal/intellectualproperty/trademarks/usage/general).
-Use of Microsoft trademarks or logos in modified versions of this project must not cause confusion or imply Microsoft sponsorship.
-Any use of third-party trademarks or logos are subject to those third-party's policies.
+In real life, it's normal that users can deposit money through an ATM at their own will. So it might be unintuitive that users can't call the endpoint. However if we allow users, they could deposit any amount of money with no actual money.
+If you want implement an ATM, the deposit procedure would be:
+
+1. User puts actual money into an ATM.
+2. The ATM counts the money.
+3. The ATM calls "Deposit money" API as the bank.
+
+## Why CCF?
+
+There are multiple reasons that you want to use CCF for a banking consortium.
+
+- The ledger generated by CCF is tamper-proof, it cannot be modified after having been produced; it is immutable. Even users without a full copy of the ledger, holding their transaction receipts, are protected.
+- Users can use [transaction receipts](https://microsoft.github.io/CCF/main/audit/receipts.html#receipts) with [application claim](https://microsoft.github.io/CCF/main/use_apps/verify_tx.html#application-claims) as proof of transferring money even without online access to the system.
+- Banks don't have to trust each other. A majority of the banks need to agree to make changes on the application with the default [constitution](https://microsoft.github.io/CCF/main/governance/constitution.html#constitution).
+- Banks and users don't have to trust node [operators](https://microsoft.github.io/CCF/main/overview/glossary.html#term-Operators).
+
+## Demo
+
+You can use the demo to understand a typical scenario.
+
+### Scenario in the demo
+
+In this scenario, the bank consortium has 3 banks as CCF members.
+Scenario is the following:
+
+1. Banks add 2 users (user0, user1) using CCF's governance mechanism (See [The CCF document](https://microsoft.github.io/CCF/main/governance/open_network.html#adding-users) for the details).
+2. A bank creates an account for each user.
+3. A bank deposit 100 to the user0's account
+4. user0 transfers 40 to the user1's account.
+5. user0 and user1 check their balance. The result should be 60 and 40 respectively.
+
+```mermaid
+sequenceDiagram
+    title Diagram of adding user in the demo
+    participant Member 0
+    participant Member 1
+    participant Member 2
+    participant CCF Network
+
+    Member 0->>+CCF Network: Propose set_user to create User 0
+    CCF Network-->>Member 0: Proposal ID
+    Member 1->>+CCF Network: Vote for Proposal ID
+    CCF Network-->>Member 1: State: Open
+    Member 2->>+CCF Network: Vote for Proposal ID
+    CCF Network-->>Member 2: State: Accepted
+
+    Note over CCF Network: Add User 0
+```
+
+```mermaid
+sequenceDiagram
+    title Diagram of the bank usage in the demo
+    participant Member 0
+    participant User 0
+    participant User 1
+    participant CCF Network
+
+    Member 0->>+CCF Network: Create an account for User 0
+    Member 0->>+CCF Network: Create an account for User 1
+    Member 0->>+CCF Network: Deposit 100 to the User 0's account
+
+    Note over CCF Network: User 0: 100
+    Note over CCF Network: User 1: 0
+
+    User 0->>+CCF Network: Transfer 40 to the User 1's account
+
+    Note over CCF Network: User 0: 60
+    Note over CCF Network: User 1: 40
+
+    User 0->>+CCF Network: Check balance
+    CCF Network-->>User 0: Balance: 60
+
+    User 1->>+CCF Network: Check balance
+    CCF Network-->>User 1: Balance: 40
+```
+
+### How to run the demo
+
+```bash
+make start-host
+
+# In another terminal
+make demo
+```
+
+## How to run the tests
+
+The banking application also has a suite of tests that run in a sandbox; please ensure you do not have an existing sandbox running.
+
+```bash
+make test
+```
+
+## Interact with the sandbox manually
+
+You can always run the sandbox yourself: -
+
+```bash
+# The dev container would have installed your npm packages for you
+
+npm run build # Transpile the TypeScript code to JavaScript and copy the output to `dist` directory
+
+initial_number_of_banks=3
+initial_number_of_users=2
+/opt/ccf_virtual/bin/sandbox.sh --js-app-bundle ./dist/ --initial-member-count $initial_number_of_banks --initial-user-count $initial_number_of_users
+```
+
+You can find example commands to use against the application in `./demo.sh`.
+
+## Creating a container image for manually dispatch a CCF Network
+
+```bash
+make build-virtual # to generate a virtual CCF Network
+make build-enclave # to generate a enclave CCF Network
+```
+
+Both make targets execute the same script: `build_image.sh`. This script expects `virtual|enclave` as parameters, and the differentiation between which image to generate and config files to use is done through the argument passed to it.
+
+The script performs the following:
+
+- create a `workspace/docker_certificates` folder to store the needed certificates
+- copy the configuration files for the images `../config/cchost_config_{setupType}_js.json`
+- generate member0 certificates (needed to start CCF network)
+- Build the container image
+- remove the config files' copies
+
+From this point, you can run your image and start governance actions on your CCF network.

@@ -9,5 +9,4 @@ package-lock.json
 *.pfx
 **/dist
 **/coverage
-data-reconciliation-app/test/reports/
 aad.env
