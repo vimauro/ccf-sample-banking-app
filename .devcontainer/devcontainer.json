@@ -1,6 +1,6 @@
 {
   "name": "CCF Sample Banking App",
-  "image": "mcr.microsoft.com/ccf/app/dev:3.0.1-virtual",
+  "image": "mcr.microsoft.com/ccf/app/dev:4.0.2-virtual",
   "customizations": {
     "vscode": {
       "extensions": [
