@@ -4,7 +4,6 @@
 **/.venv_ccf_verify_receipt
 **/workspace/
 **/node_modules
-package-lock.json
 *.pem
 *.pfx
 **/dist
