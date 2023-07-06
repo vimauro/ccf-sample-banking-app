@@ -14,7 +14,8 @@
         "editor.formatOnSave": true,
         "editor.codeActionsOnSave": {
           "source.fixAll": true
-        }
+        },
+        "remote.containers.showLocalButton": true
       }
     }
   },
