@@ -17,7 +17,10 @@
           "source.fixAll": true
         },
         "remote.containers.showLocalButton": true
-      }
+      },
+      "mounts": [
+        "source=${localEnv:HOME}${localEnv:USERPROFILE},type=bind,consistency=cached"
+        ]
     }
   },
   "postStartCommand": "scripts/devContainer_OnStart.sh",
