@@ -10,6 +10,9 @@
         "github.vscode-pull-request-github",
         "ms-vscode-remote.remote-containers"
       ],
+      "mounts": [
+        "source=${localWorkspaceFolder},target=/workspace,type=bind,consistency=cached"
+      ],
       "settings": {
         "editor.defaultFormatter": "esbenp.prettier-vscode",
         "editor.formatOnSave": true,
