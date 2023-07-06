@@ -19,7 +19,7 @@
         "remote.containers.showLocalButton": true
       },
       "mounts": [
-            "source=C:\\,target=/mnt/c,type=bind,consistency=cached"
+            "source=C:,target=/mnt/c,type=bind,consistency=cached"
         ]
     }
   },
