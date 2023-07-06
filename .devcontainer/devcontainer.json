@@ -7,7 +7,8 @@
         "vsls-contrib.codetour",
         "esbenp.prettier-vscode",
         "timonwong.shellcheck",
-        "github.vscode-pull-request-github"
+        "github.vscode-pull-request-github",
+        "ms-vscode-remote.remote-containers"
       ],
       "settings": {
         "editor.defaultFormatter": "esbenp.prettier-vscode",
@@ -15,6 +16,9 @@
         "editor.codeActionsOnSave": {
           "source.fixAll": true
         },
+      "remote.extensionKind": {
+         "ms-vscode-remote.remote-containers": "workspace"
+       },
         "remote.containers.showLocalButton": true
       }
     }
